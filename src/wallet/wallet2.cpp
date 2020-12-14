@@ -2125,10 +2125,15 @@ void wallet2::process_new_transaction(const crypto::hash &txid, const cryptonote
 	    td.m_txid = txid;
             td.m_key_image = tx_scan_info[o].ki;
             td.m_key_image_known = !m_watch_only && !m_multisig;
+
+
+
             if (!td.m_key_image_known)
             {
               // we might have cold signed, and have a mapping to key images
               std::unordered_map<crypto::public_key, crypto::key_image>::const_iterator i = m_cold_key_images.find(tx_scan_info[o].in_ephemeral.pub);
+
+
               if (i != m_cold_key_images.end())
               {
                 td.m_key_image = i->second;
@@ -2636,6 +2641,24 @@ void wallet2::pull_blocks(uint64_t start_height, uint64_t &blocks_start_height, 
   req.prune = true;
   req.start_height = start_height;
   req.no_miner_tx = m_refresh_type == RefreshNoCoinbase;
+
+  if ((m_blockchain.size() == 1) && (start_height == 0))
+  {
+      cryptonote::block genesis;
+      generate_genesis(genesis);
+      if (m_blockchain[0] == get_block_hash(genesis))
+      {
+          LOG_PRINT_L2("Processing genesis transaction: " << string_tools::pod_to_hex(get_transaction_hash(genesis.miner_tx)));
+          std::vector<uint64_t> o_indices_genesis = {0};
+          std::map<std::pair<uint64_t, uint64_t>, size_t> empty_map;
+          tx_cache_data t;
+          //genesis transaction output
+
+          process_new_transaction(get_transaction_hash(genesis.miner_tx), genesis.miner_tx, o_indices_genesis, 0, 0, genesis.timestamp, true, false, false, t, &empty_map);
+      } else {
+          LOG_ERROR("Skip processing of genesis transaction, genesis block hash does not match: " << string_tools::pod_to_hex(get_block_hash(genesis)));
+      }
+  }
 
   {
     const boost::lock_guard<boost::recursive_mutex> lock{m_daemon_rpc_mutex};

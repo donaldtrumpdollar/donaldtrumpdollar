@@ -156,8 +156,8 @@ void TransactionHistoryImpl::refresh()
     // confirmed output transactions
     // one output transaction may contain more than one money transfer, e.g.
     // <transaction_id>:
-    //    transfer1: 100XMR to <address_1>
-    //    transfer2: 50XMR  to <address_2>
+    //    transfer1: 100DTD to <address_1>
+    //    transfer2: 50DTD  to <address_2>
     //    fee: fee charged per transaction
     //
 
