@@ -1,6 +1,17 @@
-# Monero
+# Donald Trump Dollar
 
-Copyright (c) 2014-2020 The Monero Project.   
+This is a port of the Monero Project.  Main changes are:
+
+* Premine for sale and 1 million set aside for Trump.
+* Changed ports to 16450, 16451, and 16452 so they don't conflict.
+* New genesis block.
+* Changed fork times.  This is IMMEDIATELY at the latest Monero fork version.
+* Changed the names and symbol.
+* Changed storage location to ~/.donaldtrumpdollar
+* Changed executable names to `trumpdollar`*:
+  * EX: `trumpdollard` rather than `monerod`
+
+Portions Copyright (c) 2014-2020 The Monero Project.   
 Portions Copyright (c) 2012-2013 The Cryptonote developers.
 
 ## Table of Contents
